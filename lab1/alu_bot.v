@@ -29,28 +29,32 @@ reg           result;
 reg           overflow;
 reg           set;
 reg           cout;
+reg           _src1;
+reg           _src2;
 
 always@( * ) begin
     // init
-    if (A_invert) src1 = !src1;
-    if (B_invert) src2 = !src2;
-    assign {cout, result} = src1 + src2 + cin;
-    assign set = result;
-    assign overflow = 0;
+    _src1 = src1;
+    _src2 = src2;
+    if (A_invert) _src1 = !src1;
+    if (B_invert) _src2 = !src2;
+    {cout, result} = _src1 + _src2 + cin;
+    set = result;
+    overflow = 0;
     
-    if (ALU_control == 2'b00) // AND
-        assign result = src1 & src2;
-    else if (ALU_control == 2'b01) // OR
-        assign result = src1 | src2;
-    else if (ALU_control == 2'b10) begin // ADD
-        assign {cout, result} = src1 + src2 + cin;
-        if (src1 == 1 && src2 == 1 && result != 1)
-           assign overflow = 1;
-        if (src1 == 0 && src2 == 0 && result != 0)
-           assign overflow = 1;
+    if (operation == 2'b00) // AND
+        result = _src1 & _src2;
+    else if (operation == 2'b01) // OR
+        result = _src1 | _src2;
+    else if (operation == 2'b10) begin // ADD
+        {cout, result} = _src1 + _src2 + cin;
+        if (_src1 == 1 && _src2 == 1 && result != 1)
+           overflow = 1;
+        if (_src1 == 0 && _src2 == 0 && result != 0)
+           overflow = 1;
     end
-    else if (ALU_control == 4'b11) // LESS
-        assign result = less;
+    else if (operation == 4'b11) // LESS
+        result = less;
 end
 
 endmodule

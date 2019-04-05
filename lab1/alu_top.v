@@ -9,7 +9,7 @@ module alu_top(
                cin,        //1 bit carry in (input)
                operation,  //operation      (input)
                result,     //1 bit result   (output)
-               cout,       //1 bit carry out(output)
+               cout        //1 bit carry out(output)
                );
 
 input         src1;
@@ -24,21 +24,26 @@ output        result;
 output        cout;
 
 reg           result;
+reg           _src1;
+reg           _src2;
+reg           cout;
 
 always@( * ) begin
     // init
-    if (A_invert) src1 = ~src1;
-    if (B_invert) src2 = ~src2;
-    assign {cout, result} = src1 + src2 + cin;
+    _src1 = src1;
+    _src2 = src2;
+    if (A_invert) _src1 = ~src1;
+    if (B_invert) _src2 = ~src2;
+    {cout, result} = _src1 + _src2 + cin;
     
-    if (ALU_control == 2'b00) // AND
-        assign result = src1 & src2;
-    else if (ALU_control == 2'b01) // OR
-        assign result = src1 | src2;
-    else if (ALU_control == 2'b10) // ADD
-        assign {cout, result} = src1 + src2 + cin;
-    else if (ALU_control == 2'b11) // LESS
-        assign result = less;
+    if (operation == 2'b00) // AND
+        result = _src1 & _src2;
+    else if (operation == 2'b01) // OR
+        result = _src1 | _src2;
+    else if (operation == 2'b10) // ADD
+        {cout, result} = _src1 + _src2 + cin;
+    else if (operation == 2'b11) // LESS
+        result = less;
 end
 
 endmodule
