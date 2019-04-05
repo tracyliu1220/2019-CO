@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module alu_top(
+module alu_bot(
                src1,       //1 bit source 1 (input)
                src2,       //1 bit source 2 (input)
                less,       //1 bit less     (input)
@@ -9,7 +9,8 @@ module alu_top(
                cin,        //1 bit carry in (input)
                operation,  //operation      (input)
                result,     //1 bit result   (output)
-               cout,       //1 bit carry out(output)
+               set,
+               overflow
                );
 
 input         src1;
@@ -21,23 +22,34 @@ input         cin;
 input [2-1:0] operation;
 
 output        result;
-output        cout;
+output        overflow;
+output        set;
 
 reg           result;
+reg           overflow;
+reg           set;
+reg           cout;
 
 always@( * ) begin
     // init
-    if (A_invert) src1 = ~src1;
-    if (B_invert) src2 = ~src2;
+    if (A_invert) src1 = !src1;
+    if (B_invert) src2 = !src2;
     assign {cout, result} = src1 + src2 + cin;
+    assign set = result;
+    assign overflow = 0;
     
     if (ALU_control == 2'b00) // AND
         assign result = src1 & src2;
     else if (ALU_control == 2'b01) // OR
         assign result = src1 | src2;
-    else if (ALU_control == 2'b10) // ADD
+    else if (ALU_control == 2'b10) begin // ADD
         assign {cout, result} = src1 + src2 + cin;
-    else if (ALU_control == 2'b11) // LESS
+        if (src1 == 1 && src2 == 1 && result != 1)
+           assign overflow = 1;
+        if (src1 == 0 && src2 == 0 && result != 0)
+           assign overflow = 1;
+    end
+    else if (ALU_control == 4'b11) // LESS
         assign result = less;
 end
 
