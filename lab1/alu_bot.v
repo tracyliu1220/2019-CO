@@ -51,9 +51,11 @@ always@( * ) begin
     else if (operation == 2'b10) begin // ADD
         {cout, result} = _src1 + _src2 + cin;
         if (_src1 == 1 && _src2 == 1 && result != 1)
-           overflow = 1;
-        if (_src1 == 0 && _src2 == 0 && result != 0)
-           overflow = 1;
+            overflow = 1;
+        else if (_src1 == 0 && _src2 == 0 && result != 0)
+            overflow = 1;
+        else
+            overflow = 0;
     end
     else if (operation == 4'b11) // LESS
         result = less;

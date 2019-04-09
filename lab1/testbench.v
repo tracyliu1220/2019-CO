@@ -52,6 +52,8 @@ wire  [8-1:0] bonus_check;
 	assign zcv_correct = mem_zcv[pattern_count-1];
 
 initial begin
+	$dumpfile("alu_tb.vcd");
+	$dumpvars(0, testbench);
 	clk   = 1'b0;
 	rst_n = 1'b0;
 	src1_in = 32'd0;
@@ -100,7 +102,6 @@ always #5 clk = ~clk;
 		.overflow(overflow_out)
 	);
 `endif
-
 always@(posedge clk) begin
 	if(pattern_count == (PATTERN_NUMBER+1)) begin
 		if(error_count == 5'd0) begin

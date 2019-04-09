@@ -1,20 +1,5 @@
 `timescale 1ns/1ps
-/*
-module alu_top(
-               src1,       //1 bit source 1 (input)
-               src2,       //1 bit source 2 (input)
-               less,       //1 bit less     (input)
-               A_invert,   //1 bit A_invert (input)
-               B_invert,   //1 bit B_invert (input)
-               cin,        //1 bit carry in (input)
-               operation,  //operation      (input)
-               result,     //1 bit result   (output)
-               cout,       //1 bit carry out(output)
 
-               set, // bot
-               overflow //bot
-               );
-*/
 module alu(
            rst_n,         // negative reset            (input)
            src1,          // 32 bits source 1          (input)
@@ -29,8 +14,6 @@ module alu(
 
 
 input           rst_n;
-// if (rst_n != 1)
-    // endmodule;
 
 input  [32-1:0] src1;
 input  [32-1:0] src2;
@@ -43,15 +26,12 @@ output          cout;
 output          overflow;
 
 wire    [32-1:0] result;
-wire             zero;
+reg             zero;
 wire             cout;
 wire             overflow;
 
 wire    [32-1:0] w_cout;
 wire             set;
-// reg     [5-1:0] idx;
-
-genvar          idx;
 
       //ax(src1, src2, less, A_invert, B_invert, cin, operation, result, cout);
 alu_top a00(src1[ 0], src2[ 0],  set, ALU_control[3], ALU_control[2], ALU_control[2], ALU_control[1:0], result[ 0], w_cout[ 0]),
@@ -87,6 +67,11 @@ alu_top a00(src1[ 0], src2[ 0],  set, ALU_control[3], ALU_control[2], ALU_contro
         a30(src1[30], src2[30], 1'b0, ALU_control[3], ALU_control[2],     w_cout[29], ALU_control[1:0], result[30], w_cout[30]);
 alu_bot a31(src1[31], src2[31], 1'b0, ALU_control[3], ALU_control[2],     w_cout[30], ALU_control[1:0], result[31], set, overflow, cout);
 
+always@(negedge rst_n) begin
+    if (result == 32'd0)
+        assign zero = 0;
+end
+/*
 or or1(zero,
        result[ 0],
        result[ 1],
@@ -121,5 +106,6 @@ or or1(zero,
        result[30],
        result[31]);
 not not1(zero, zero);
+*/
 
 endmodule
