@@ -1,7 +1,1 @@
-#!/bin/bash
-
-tar=$1
-len=$(echo $tar | wc -m)
-iverilog -o $*
-vvp $tar
-gtkwave "$(echo $tar | cut -c1-$(($len - 3)))cd"
+iverilog -o alu_tb.vvp testbench.v alu.v alu_top.v alu_bot.v

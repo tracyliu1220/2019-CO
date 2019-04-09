@@ -10,7 +10,8 @@ module alu_bot(
                operation,  //operation      (input)
                result,     //1 bit result   (output)
                set,
-               overflow
+               overflow,
+               cout
                );
 
 input         src1;
@@ -24,6 +25,7 @@ input [2-1:0] operation;
 output        result;
 output        overflow;
 output        set;
+output        cout;
 
 reg           result;
 reg           overflow;
