@@ -53,25 +53,8 @@ wire             set;
 
 genvar          idx;
 
-/*
-always@( * ) begin
-
-    if (ALU_control == 4'b0000)
-        ALU_control[1:0] = 2'b00;
-    else if (ALU_control == 4'b0001)
-        ALU_control[1:0] = 2'b01;
-    else if (ALU_control == 4'b0010)
-        ALU_control[1:0] = 2'b10;
-    else if (ALU_control == 4'b0110) begin
-        ALU_control[1:0] = 2'b10;
-        ALU_control[1] = 1;
-    end
-
-end
-*/
-
       //ax(src1, src2, less, A_invert, B_invert, cin, operation, result, cout);
-alu_top a00(src1[ 0], src2[ 0],  set, ALU_control[3], ALU_control[2], ALU_control[1], ALU_control[1:0], result[ 0], w_cout[ 0]),
+alu_top a00(src1[ 0], src2[ 0],  set, ALU_control[3], ALU_control[2], ALU_control[2], ALU_control[1:0], result[ 0], w_cout[ 0]),
         a01(src1[ 1], src2[ 1], 1'b0, ALU_control[3], ALU_control[2],     w_cout[ 0], ALU_control[1:0], result[ 1], w_cout[ 1]),
         a02(src1[ 2], src2[ 2], 1'b0, ALU_control[3], ALU_control[2],     w_cout[ 1], ALU_control[1:0], result[ 2], w_cout[ 2]),
         a03(src1[ 3], src2[ 3], 1'b0, ALU_control[3], ALU_control[2],     w_cout[ 2], ALU_control[1:0], result[ 3], w_cout[ 3]),
@@ -104,9 +87,39 @@ alu_top a00(src1[ 0], src2[ 0],  set, ALU_control[3], ALU_control[2], ALU_contro
         a30(src1[30], src2[30], 1'b0, ALU_control[3], ALU_control[2],     w_cout[29], ALU_control[1:0], result[30], w_cout[30]);
 alu_bot a31(src1[31], src2[31], 1'b0, ALU_control[3], ALU_control[2],     w_cout[30], ALU_control[1:0], result[31], set, overflow, cout);
 
-for (idx = 0; idx < 32; idx = idx + 1) begin
-    assign zero = zero | result[idx];
-end
-assign zero = ~zero;
+or or1(zero,
+       result[ 0],
+       result[ 1],
+       result[ 2],
+       result[ 3],
+       result[ 4],
+       result[ 5],
+       result[ 6],
+       result[ 7],
+       result[ 8],
+       result[ 9],
+       result[10],
+       result[11],
+       result[12],
+       result[13],
+       result[14],
+       result[15],
+       result[16],
+       result[17],
+       result[18],
+       result[19],
+       result[20],
+       result[21],
+       result[22],
+       result[23],
+       result[24],
+       result[25],
+       result[26],
+       result[27],
+       result[28],
+       result[29],
+       result[30],
+       result[31]);
+not not1(zero, zero);
 
 endmodule
