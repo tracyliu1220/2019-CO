@@ -1,2 +1,2 @@
-iverilog -o alu_tb.vvp testbench.v alu.v alu_top.v alu_bot.v
+iverilog -o alu_tb.vvp testbench.v alu.v alu_top.v
 vvp alu_tb.vvp
