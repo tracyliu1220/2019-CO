@@ -26,7 +26,7 @@ output          cout;
 output          overflow;
 
 wire    [32-1:0] result;
-wire            zero;
+wire             zero;
 wire             cout;
 wire             overflow;
 

@@ -48,21 +48,6 @@ always@( * ) begin
     if (B_invert) _src2 = ~src2;
     {cout, result} = _src1 + _src2 + cin;
     set = result;
-
-/*
-    if (bonus == 3'b000)
-        compare_result = less;
-    else if (bonus == 3'b001)
-        compare_result = ~less && ~equal;
-    else if (bonus == 3'b010)
-        compare_result = less | equal;
-    else if (bonus == 3'b011)
-        compare_result = ~less | equal;
-    else if (bonus == 3'b110)
-        compare_result = equal;
-    else if (bonus == 3'b100)
-        compare_result = ~equal;
-*/
     
     if (operation == 2'b00) // AND
         result = _src1 & _src2;
@@ -72,16 +57,6 @@ always@( * ) begin
         {cout, result} = _src1 + _src2 + cin;
     else if (operation == 2'b11) begin // LESS
         
-/*
-        case(bonus_control)
-            3'b000: result = less;
-            3'b001: result = ~less;
-            3'b010: result = less | equal;
-            3'b011: result = ~less | equal;
-            3'b110: result = equal;
-            3'b100: result = ~equal;
-        endcase
-*/
         result = compare_result & comp;
     end
 end

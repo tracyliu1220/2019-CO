@@ -52,11 +52,7 @@ wire  [8-1:0] bonus_check;
 	assign zcv_correct = mem_zcv[pattern_count-1];
 
 initial begin
-
-	$dumpfile("alu_tb.vcd");
-	$dumpvars(0, alu);
-	
-    clk   = 1'b0;
+	clk   = 1'b0;
 	rst_n = 1'b0;
 	src1_in = 32'd0;
 	src2_in = 32'd0;
